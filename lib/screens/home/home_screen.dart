@@ -1,5 +1,4 @@
-import 'package:bloc_demo_api/blocs/InternetBloc/internet_bloc.dart';
-import 'package:bloc_demo_api/blocs/InternetBloc/internet_state.dart';
+import 'package:bloc_demo_api/cubits/InternetCubit/internet_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,24 +8,24 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:
-          BlocConsumer<InternetBloc, InternetState>(listener: (context, state) {
-        if (state is InternetConnectedState) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      body: BlocConsumer<InternetCubit, InternetState>(
+          listener: (context, state) {
+        if (state == InternetState.connected) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("Connected"),
             backgroundColor: Colors.green,
           ));
-        } else if (state is InternetConnectedState) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        } else if (state == InternetState.disconnected) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text("Not Connected"), backgroundColor: Colors.red));
         }
       }, builder: (context, state) {
-        if (state is InternetConnectedState) {
-          return Center(child: const Text("Connected"));
-        } else if (state is InternetConnectedState) {
-          return Center(child: const Text("Not Connected"));
+        if (state == InternetState.connected) {
+          return const Center(child: Text("Connected"));
+        } else if (state == InternetState.disconnected) {
+          return Center(child:  Text("Not Connected ${state.name}"));
         } else {
-          return Center(child: const Text("Loading"));
+          return const Center(child: Text("Loading"));
         }
       }),
     );
