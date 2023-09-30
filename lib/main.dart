@@ -1,9 +1,18 @@
-import 'package:bloc_demo_api/screens/SignInScreen/SignInBloc/sign_in_bloc.dart';
+import 'package:bloc_demo_api/bloc/authBloc/auth_cubit.dart';
+import 'package:bloc_demo_api/bloc/authBloc/auth_states.dart';
 import 'package:bloc_demo_api/screens/SignInScreen/sign_in_screen.dart';
+import 'package:bloc_demo_api/screens/home/home_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -14,13 +23,28 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context)=> SignInBloc(),
+      create: (context) => AuthCubit(),
       child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: SignInScreen()
+          title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: BlocBuilder<AuthCubit, AuthStates>(
+            buildWhen: (oldState, newState){
+              return oldState is AuthInitState;
+            },
+            builder: (context, state) {
+              if(state is AuthLoggedInState){
+                return HomeScreen();
+              }else if(state is AuthLoggedOutState){
+                return SignInScreen();
+              }else{
+                return Scaffold();
+              }
+
+            },
+          )
       ),
     );
   }

@@ -1,15 +1,15 @@
 import 'package:bloc_demo_api/bloc/authBloc/auth_cubit.dart';
 import 'package:bloc_demo_api/bloc/authBloc/auth_states.dart';
-import 'package:bloc_demo_api/screens/verifyOtp/verify_otp_screen.dart';
+import 'package:bloc_demo_api/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SignInScreen extends StatelessWidget {
-  const SignInScreen({super.key});
+class VerifyOtpScreen extends StatelessWidget {
+  const VerifyOtpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController mobileController = TextEditingController();
+    TextEditingController otpController = TextEditingController();
 
     return SafeArea(
       child: Scaffold(
@@ -21,21 +21,20 @@ class SignInScreen extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              const Text("Firebase Auth Demo",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24
-                ),),
+              const Text(
+                "Firebase Auth Demo",
+                style: TextStyle(color: Colors.black, fontSize: 24),
+              ),
               const SizedBox(
                 height: 10,
               ),
               TextField(
-                controller: mobileController,
+                controller: otpController,
                 onChanged: (value) {},
                 keyboardType: TextInputType.phone,
                 maxLength: 10,
                 decoration: InputDecoration(
-                    hintText: "Enter contact number",
+                    hintText: "Enter OTP",
                     counterText: '',
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(4))),
@@ -46,24 +45,27 @@ class SignInScreen extends StatelessWidget {
               Center(
                 child: BlocConsumer<AuthCubit, AuthStates>(
                   listener: (context, state) {
-                    if(state is AuthCodeSentState){
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const VerifyOtpScreen()));
+                    if (state is AuthLoggedInState) {
+                      Navigator.popUntil(context, (route) => route.isFirst);
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const HomeScreen()));
+                    } else if (state is AuthErrorState) {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar( SnackBar(content: Text(state.errorMessage)));
                     }
                   },
                   builder: (context, state) {
-                    if(state is AuthLoadingState){
-                      return const Center(child: CircularProgressIndicator());
+                    if (state is AuthLoadingState) {
+                      return const CircularProgressIndicator();
                     }
                     return ElevatedButton(
                         onPressed: () {
-                          String mobile = "+91${mobileController.text}";
-                          BlocProvider.of<AuthCubit>(context).sendOtp(mobile);
-
+                          BlocProvider.of<AuthCubit>(context)
+                              .verifyOtp(otpController.text);
                         },
                         style: const ButtonStyle(
-                          backgroundColor: MaterialStatePropertyAll(Colors
-                              .blue),
+                          backgroundColor:
+                              MaterialStatePropertyAll(Colors.blue),
                         ),
                         child: const Text("Submit"));
                   },

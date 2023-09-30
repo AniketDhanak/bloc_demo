@@ -39,6 +39,8 @@ dependencies:
   connectivity_plus: ^4.0.2
   path_provider: any
   email_validator: any
+  firebase_core: any
+  firebase_auth: any
 
 dev_dependencies:
   flutter_test:
