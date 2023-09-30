@@ -38,6 +38,7 @@ dependencies:
   flutter_bloc: ^8.1.3
   connectivity_plus: ^4.0.2
   path_provider: any
+  email_validator: any
 
 dev_dependencies:
   flutter_test:

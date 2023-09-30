@@ -1,5 +1,5 @@
-import 'package:bloc_demo_api/cubits/InternetCubit/internet_cubit.dart';
-import 'package:bloc_demo_api/screens/home/home_screen.dart';
+import 'package:bloc_demo_api/screens/SignInScreen/SignInBloc/sign_in_bloc.dart';
+import 'package:bloc_demo_api/screens/SignInScreen/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,13 +14,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context)=> InternetCubit(),
+      create: (context)=> SignInBloc(),
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: HomeScreen()
+        home: SignInScreen()
       ),
     );
   }
