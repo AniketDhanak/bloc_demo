@@ -1,5 +1,6 @@
 class RouteConstants{
   static const initRoute = "/";
   static const homeScreen = "/homeScreen";
-  static const lastScreen = "/lastScreen";
+  static const userDetailsScreen = "/userDetailsScreen";
+  static const addPostScreen = "/addPostScreen";
 }

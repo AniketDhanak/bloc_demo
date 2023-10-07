@@ -1,4 +1,7 @@
+import 'package:bloc_demo_api/constants/color_constants.dart';
 import 'package:bloc_demo_api/constants/route_constants.dart';
+import 'package:bloc_demo_api/constants/string_constants.dart';
+import 'package:bloc_demo_api/constants/style_constants.dart';
 import 'package:bloc_demo_api/screens/splash/bloc/splash_cubit.dart';
 import 'package:bloc_demo_api/screens/splash/bloc/splash_states.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +21,8 @@ class SplashScreen extends StatelessWidget {
       child: Scaffold(
         body: Center(
             child: Text(
-          "Splash Screen",
-          style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+          StringConstants.splashScreen,
+          style: StyleConstants.h128PxStyleBold(color: AppColors.black),
         )),
       ),
     );

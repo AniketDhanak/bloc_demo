@@ -1,6 +1,10 @@
+import 'package:bloc_demo_api/constants/color_constants.dart';
+import 'package:bloc_demo_api/constants/font_constants.dart';
 import 'package:bloc_demo_api/constants/route_constants.dart';
+import 'package:bloc_demo_api/constants/string_constants.dart';
+import 'package:bloc_demo_api/extension/color_extensions.dart';
 import 'package:bloc_demo_api/routes/routes.dart';
-import 'package:bloc_demo_api/screens/home/home_screen.dart';
+import 'package:bloc_demo_api/utils/size_config.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -20,14 +24,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Flutter Demo',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-       onGenerateRoute: Routes.onGenerateRoute,
-      initialRoute: RouteConstants.initRoute,
-    );
+    return LayoutBuilder(builder: (context, constraints){
+      return OrientationBuilder(builder: (context, orientation){
+      SizeConfig().init(constraints, orientation);
+      return MaterialApp(
+          title: StringConstants.appName,
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            primarySwatch: AppColors.primary1.toMaterialColor(),
+            fontFamily: FontConstants.roboto,
+          ),
+          onGenerateRoute: Routes.onGenerateRoute,
+          initialRoute: RouteConstants.initRoute,
+        );
+      });
+    });
   }
 }
